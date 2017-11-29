@@ -1,1 +1,2 @@
-# SOC-demo
+# SuSE OpenStack Cloud demo
+## Heat
