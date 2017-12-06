@@ -1,0 +1,410 @@
+---
+proposals:
+- barclamp: crowbar
+  wipe_attributes:
+    - instances.deployer
+    - instances.ipmi
+    - instances.provisioner
+    - instances.network
+    - instances.ntp
+    - instances.dns
+    - instances.logging
+  attributes:
+    realm: SUSE OpenStack Cloud Admin Server
+    users:
+      machine-install:
+        password: 751f81447eb791294c44e008033b7f32c6fcbaf9e7415a744be8d15bc9c307282a2937d632f17aa83f1b2a2a5338f49b8ad464a988d35efddaf0c5dcea4f609a
+  deployment:
+    elements:
+      crowbar:
+      - admin.soc7.novell-cis.ru
+- barclamp: deployer
+  attributes:
+  deployment:
+    elements:
+      deployer-client:
+      - admin.soc7.novell-cis.ru
+      - "@@strg2@@"
+      - "@@ctrl2@@"
+      - "@@ctrl3@@"
+      - "@@strg1@@"
+      - "@@ctrl1@@"
+      - "@@cmpt2@@"
+      - "@@cmpt1@@"
+      - "@@cmpt3@@"
+- barclamp: provisioner
+  attributes:
+    root_password_hash: "$1$BDTENLhR$iJqOyw4ZmFZMktLIb9kDI/"
+    timezone: Europe/Moscow
+  deployment:
+    elements:
+      provisioner-server:
+      - admin.soc7.novell-cis.ru
+      provisioner-base:
+      - admin.soc7.novell-cis.ru
+      - "@@strg2@@"
+      - "@@ctrl1@@"
+      - "@@cmpt2@@"
+      - "@@ctrl2@@"
+      - "@@ctrl3@@"
+      - "@@cmpt1@@"
+      - "@@strg1@@"
+      - "@@cmpt3@@"
+- barclamp: ipmi
+  attributes:
+  deployment:
+    elements:
+      bmc-nat-router:
+      - admin.soc7.novell-cis.ru
+      ipmi:
+      - admin.soc7.novell-cis.ru
+      - "@@strg2@@"
+      - "@@ctrl2@@"
+      - "@@ctrl3@@"
+      - "@@strg1@@"
+      - "@@ctrl1@@"
+      - "@@cmpt2@@"
+      - "@@cmpt1@@"
+      - "@@cmpt3@@"
+      bmc-nat-client:
+      - "@@strg2@@"
+      - "@@ctrl1@@"
+      - "@@cmpt2@@"
+      - "@@ctrl2@@"
+      - "@@ctrl3@@"
+      - "@@cmpt1@@"
+      - "@@strg1@@"
+      - "@@cmpt3@@"
+- barclamp: network
+  attributes:
+    mode: dual
+  deployment:
+    elements:
+      switch_config:
+      - admin.soc7.novell-cis.ru
+      network:
+      - admin.soc7.novell-cis.ru
+      - "@@strg2@@"
+      - "@@ctrl1@@"
+      - "@@cmpt2@@"
+      - "@@ctrl2@@"
+      - "@@ctrl3@@"
+      - "@@cmpt1@@"
+      - "@@strg1@@"
+      - "@@cmpt3@@"
+- barclamp: dns
+  attributes:
+    domain: soc7.novell-cis.ru
+    forwarders:
+    - 192.168.124.1
+  deployment:
+    elements:
+      dns-server:
+      - admin.soc7.novell-cis.ru
+      dns-client:
+      - "@@strg2@@"
+      - "@@strg1@@"
+      - "@@cmpt1@@"
+      - "@@ctrl2@@"
+      - "@@ctrl1@@"
+      - "@@ctrl3@@"
+      - "@@cmpt2@@"
+      - "@@cmpt3@@"
+- barclamp: logging
+  attributes:
+  deployment:
+    elements:
+      logging-server:
+      - admin.soc7.novell-cis.ru
+      logging-client:
+      - "@@strg2@@"
+      - "@@strg1@@"
+      - "@@cmpt1@@"
+      - "@@ctrl2@@"
+      - "@@ctrl1@@"
+      - "@@ctrl3@@"
+      - "@@cmpt2@@"
+      - "@@cmpt3@@"
+- barclamp: ntp
+  attributes:
+    external_servers:
+    - ru.pool.ntp.org
+    - us.pool.ntp.org
+  deployment:
+    elements:
+      ntp-server:
+      - admin.soc7.novell-cis.ru
+      ntp-client:
+      - "@@strg2@@"
+      - "@@strg1@@"
+      - "@@cmpt1@@"
+      - "@@ctrl2@@"
+      - "@@ctrl1@@"
+      - "@@ctrl3@@"
+      - "@@cmpt2@@"
+      - "@@cmpt3@@"
+- barclamp: pacemaker
+  name: cluster
+  attributes:
+    corosync:
+      password: hacluster
+    stonith:
+      mode: sbd
+      sbd:
+        watchdog_module: softdog
+        nodes:
+          d00-50-56-b9-79-42.soc7.novell-cis.ru:
+            devices:
+            - "/dev/sdb"
+          d00-50-56-b9-8a-7b.soc7.novell-cis.ru:
+            devices:
+            - "/dev/sdb"
+          d00-50-56-b9-6b-ef.soc7.novell-cis.ru:
+            devices:
+            - "/dev/sdb"
+          d00-50-56-b9-c7-0e.soc7.novell-cis.ru:
+            devices:
+            - "/dev/sdb"
+          d00-50-56-b9-82-69.soc7.novell-cis.ru:
+            devices:
+            - "/dev/sdb"
+      per_node:
+        nodes:
+          d00-50-56-b9-79-42.soc7.novell-cis.ru:
+            params: ''
+          d00-50-56-b9-8a-7b.soc7.novell-cis.ru:
+            params: ''
+          d00-50-56-b9-6b-ef.soc7.novell-cis.ru:
+            params: ''
+          d00-50-56-b9-c7-0e.soc7.novell-cis.ru:
+            params: ''
+          d00-50-56-b9-82-69.soc7.novell-cis.ru:
+            params: ''
+    drbd:
+      shared_secret: tp4w8cfg3pp0
+  deployment:
+    elements:
+      pacemaker-cluster-member:
+      - "@@ctrl1@@"
+      - "@@ctrl2@@"
+      - "@@ctrl3@@"
+      hawk-server:
+      - "@@ctrl1@@"
+      - "@@ctrl2@@"
+      - "@@ctrl3@@"
+      pacemaker-remote:
+      - "@@cmpt1@@"
+      - "@@cmpt2@@"
+- barclamp: nfs_client
+  name: Glance
+  attributes:
+    exports:
+      glance:
+        nfs_server: 192.168.124.1
+        export: "/srv/export/glance"
+        mount_path: "/var/lib/glance/images"
+        mount_options:
+        - ''
+  deployment:
+    elements:
+      nfs-client:
+      - "@@ctrl1@@"
+      - "@@ctrl2@@"
+      - "@@ctrl3@@"
+# WARNING: no proposals exist for suse_manager_client barclamp
+- barclamp: database
+  attributes:
+    ha:
+      storage:
+        shared:
+          device: "/dev/sdc"
+          fstype: ext4
+  deployment:
+    elements:
+      database-server:
+      - cluster:cluster
+- barclamp: rabbitmq
+  attributes:
+    password: MpBzsQZMlctC
+    cluster: false
+    ha:
+      storage:
+        shared:
+          device: "/dev/sdd"
+          fstype: ext4
+    trove:
+      password: pt5BePW8vS72
+  deployment:
+    elements:
+      rabbitmq-server:
+      - cluster:cluster
+- barclamp: keystone
+  attributes:
+    database_instance: default
+    rabbitmq_instance: default
+    db:
+      password: 3qMa6t7UiYhH
+    service:
+      token: YdL4yI3DBNxf
+    signing:
+      token_format: uuid
+  deployment:
+    elements:
+      keystone-server:
+      - cluster:cluster
+# WARNING: no proposals exist for monasca barclamp
+# WARNING: no proposals exist for ceph barclamp
+# WARNING: no proposals exist for swift barclamp
+- barclamp: glance
+  attributes:
+    service_password: EWzsYuvcCtmS
+    db:
+      password: E2LkFK8IySCB
+    keystone_instance: default
+    database_instance: default
+    rabbitmq_instance: default
+  deployment:
+    elements:
+      glance-server:
+      - cluster:cluster
+- barclamp: cinder
+  attributes:
+    rabbitmq_instance: default
+    keystone_instance: default
+    glance_instance: default
+    database_instance: default
+    service_password: dWSd2XNd1TDg
+    keymgr_fixed_key: 1tltjduRmaEd
+    volumes:
+    - backend_driver: nfs
+      backend_name: NFS Gate
+      nfs:
+        nfs_shares: 192.168.124.1:/srv/export/cinder
+    db:
+      password: tnzcpbNeHy6E
+  deployment:
+    elements:
+      cinder-controller:
+      - cluster:cluster
+      cinder-volume:
+      - "@@strg2@@"
+      - "@@strg1@@"
+- barclamp: neutron
+  attributes:
+    service_password: 2qyNSBfzOk6O
+    rabbitmq_instance: default
+    keystone_instance: default
+    ml2_mechanism_drivers:
+    - linuxbridge
+    ml2_type_drivers:
+    - vlan
+    ml2_type_drivers_default_provider_network: vlan
+    ml2_type_drivers_default_tenant_network: vlan
+    database_instance: default
+    db:
+      password: CfO7Xio5l57N
+  deployment:
+    elements:
+      neutron-server:
+      - cluster:cluster
+      neutron-network:
+      - cluster:cluster
+# WARNING: no proposals exist for ironic barclamp
+- barclamp: nova
+  attributes:
+    service_password: qSAUl2PsapAb
+    neutron_metadata_proxy_shared_secret: EBpFTIh6sFQf
+    database_instance: default
+    rabbitmq_instance: default
+    keystone_instance: default
+    glance_instance: default
+    cinder_instance: default
+    neutron_instance: default
+    itxt_instance: ''
+    use_migration: true
+    image_cache_manager_interval: -1
+    compute_remotefs_sshkey: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+      QyNTUxOQAAACBqKNw5CPdxQqsvA74Lo81LN6rM5CS/ZAS/k6xcQMCPFwAAAJDKD9Vfyg/V
+      XwAAAAtzc2gtZWQyNTUxOQAAACBqKNw5CPdxQqsvA74Lo81LN6rM5CS/ZAS/k6xcQMCPFw
+      AAAECI75U+h5EmZ/ajGRvhckhCRhHNIbRwXJLZVRYgRuyr02oo3DkI93FCqy8DvgujzUs3
+      qszkJL9kBL+TrFxAwI8XAAAADWNyb3diYXJAYWRtaW4=
+      -----END OPENSSH PRIVATE KEY-----
+    ec2-api:
+      db:
+        password: G8cpykSJnCXY
+    db:
+      password: vNdhq874jqQN
+    api_db:
+      password: rU0En8dwlFZs
+  deployment:
+    elements:
+      nova-controller:
+      - cluster:cluster
+      nova-compute-kvm:
+      - remotes:cluster
+      nova-compute-qemu: []
+      nova-compute-xen: []
+- barclamp: horizon
+  attributes:
+    keystone_instance: default
+    database_instance: default
+    db:
+      password: ddWWY5LYuxJh
+  deployment:
+    elements:
+      horizon-server:
+      - cluster:cluster
+- barclamp: heat
+  attributes:
+    rabbitmq_instance: default
+    database_instance: default
+    stack_domain_admin_password: aDPWeBMRuTBk
+    keystone_instance: default
+    service_password: igQqZDVgpziM
+    auth_encryption_key: djVhPAQu7d2iPP0ZEjI5inIAAV4O7zvfxyF7
+    db:
+      password: maIApgKAyEv9
+  deployment:
+    elements:
+      heat-server:
+      - cluster:cluster
+- barclamp: ceilometer
+  attributes:
+    cpu_interval: 60
+    disk_interval: 60
+    network_interval: 60
+    meters_interval: 60
+    metering_secret: ZfMtNT2mEHwP
+    rabbitmq_instance: default
+    database_instance: default
+    keystone_instance: default
+    service_password: 7EKGrmm18ECY
+    db:
+      password: cVqvEPw1kRmo
+  deployment:
+    elements:
+      ceilometer-agent:
+      - "@@cmpt2@@"
+      - "@@cmpt1@@"
+      ceilometer-central:
+      - cluster:cluster
+      ceilometer-server:
+      - cluster:cluster
+      ceilometer-swift-proxy-middleware: []
+- barclamp: updater
+  attributes:
+    zypper:
+      licenses_agree: true
+  deployment:
+    elements:
+      updater:
+      - admin.soc7.novell-cis.ru
+# WARNING: no proposals exist for aodh barclamp
+# WARNING: no proposals exist for barbican barclamp
+# WARNING: no proposals exist for manila barclamp
+# WARNING: no proposals exist for trove barclamp
+# WARNING: no proposals exist for magnum barclamp
+# WARNING: no proposals exist for sahara barclamp
+# WARNING: no proposals exist for tempest barclamp
