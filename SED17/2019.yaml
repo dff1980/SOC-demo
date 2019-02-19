@@ -13,9 +13,9 @@ parameters:
     #type: number
     type: string
     description: 10.3.X.0/16 Net addr
-    default: 2
+    default: 4
     #constraints:
-     # - range: { min: 2, max: 100 }
+     # - range: { min: 4, max: 100 }
       #  description: Net number must be between 2 and 100
   volume_size:
     type: number
@@ -52,9 +52,9 @@ resources:
         properties:
           network_id: { get_resource: private_net }
           cidr:
-           list_join: ['.', ['10', '3', { get_param: net_addr }, '0/16']] 
+           list_join: ['.', ['10', { get_param: net_addr }, '0', '0/16']] 
           gateway_ip:
-           list_join: ['.', ['10', '3', { get_param: net_addr }, '1']]
+           list_join: ['.', ['10', { get_param: net_addr }, '0', '1']]
           name:
            list_join: ['-', ['private-subnet', { get_param: net_addr } ]]
 
@@ -86,7 +86,7 @@ resources:
       - { get_resource: secgroup-www }
       networks:
         #- network: { get_resource: private_net }
-        #- network: private
+        - network: fixed
         - subnet: { get_resource: private_subnet }
       user_data:
         str_replace:
