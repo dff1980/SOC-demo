@@ -67,6 +67,7 @@ resources:
       key_name: { get_param: key_name }
       image: Fake Apache jeos
       flavor: m1.small
+      security_groups: WWW SSH ICMP
       networks:
         #- network: { get_resource: private_net }
         #- network: private
@@ -111,6 +112,7 @@ resources:
       key_name: { get_param: key_name }
       image: Fake Apache jeos
       flavor: m1.small
+      security_groups: WWW SSH ICMP
       networks:
         #- network: { get_resource: private_net }
         #- network: private
