@@ -66,7 +66,7 @@ resources:
     properties:
       key_name: { get_param: key_name }
       image: Fake Apache jeos
-      flavor: m1.tiny
+      flavor: m1.small
       networks:
         #- network: { get_resource: private_net }
         #- network: private
@@ -110,7 +110,7 @@ resources:
     properties:
       key_name: { get_param: key_name }
       image: Fake Apache jeos
-      flavor: m1.tiny
+      flavor: m1.small
       networks:
         #- network: { get_resource: private_net }
         #- network: private
