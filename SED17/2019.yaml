@@ -100,7 +100,7 @@ resources:
                   </title>
                  </head>
              <body>
-              <h1>Welcome to SOC8 2019 Demo</h1>
+              <h1>Welcome to SOC 2019 Demo</h1>
               <h2>IP: float_ip<br>Subnet ID: subnet</h2>
              </body>
             </html>
